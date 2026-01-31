@@ -56,6 +56,10 @@
       // Enhanced print window logic
       window.openPrintWindow = function(htmlContent) {
         const printWindow = window.open('', '_blank', 'width=1200,height=800');
+        if (!printWindow) {
+          alert("Please allow popups to use the Isolated Print View.");
+          return;
+        }
         const styles = Array.from(document.querySelectorAll('style, link[rel="stylesheet"]'))
           .map(s => s.outerHTML)
           .join('');
@@ -68,33 +72,37 @@
               <style>
                 body { padding: 20px; background: white; }
                 .print-hidden { display: none !important; }
+                /* Ensure grid fills the print page */
+                .grid-body-container { width: 100% !important; }
               </style>
             <link rel="stylesheet" href="/index.css">
+    <script type="importmap">
+    {
+      "imports": {
+        "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+        "@google/genai": "https://esm.sh/@google/genai@^1.38.0",
+        "react/": "https://esm.sh/react@^19.2.4/",
+        "react": "https://esm.sh/react@^19.2.4",
+        "firebase/app": "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js",
+        "firebase/database": "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js",
+        "firebase/": "https://esm.sh/firebase@^12.8.0/"
+      }
+    }
+    </script>
+  <script type="module" crossorigin src="/assets/index-DvTJQxf-.js"></script>
 </head>
             <body>
-              ${htmlContent}
+              <div class="print-container">
+                ${htmlContent}
+              </div>
               <script>
                 window.onload = function() {
                   window.focus();
                   setTimeout(() => {
                     window.print();
-                    // window.close(); // Optional: close after print
-                  }, 500);
+                  }, 1000);
                 };
               <\/script>
-  <script type="importmap">
-{
-  "imports": {
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "@google/genai": "https://esm.sh/@google/genai@^1.38.0",
-    "react/": "https://esm.sh/react@^19.2.4/",
-    "react": "https://esm.sh/react@^19.2.4",
-    "firebase/app": "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js",
-    "firebase/database": "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js",
-    "firebase/": "https://esm.sh/firebase@^12.8.0/"
-  }
-}
-</script>
             <script type="module" src="/index.tsx"></script>
 </body>
           </html>
@@ -103,7 +111,7 @@
       };
     </script>
 
-</head>
+  </head>
   <body class="bg-gray-50 text-gray-900">
     <div id="root"></div>
   </body>
