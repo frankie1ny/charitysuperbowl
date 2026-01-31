@@ -7,8 +7,81 @@
     <title>Super Bowl Charity Squares</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-
-<link rel="stylesheet" href="/index.css">
+    <style>
+      @media print {
+        @page { margin: 0.5cm; size: landscape; }
+        html, body { 
+          height: auto !important; 
+          overflow: visible !important; 
+          background: white !important; 
+          padding: 0 !important; 
+          margin: 0 !important;
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+        .print-hidden, 
+        .no-print, 
+        nav, 
+        footer, 
+        .grid-controls, 
+        .legend-container, 
+        .status-bar, 
+        .assistant-btn,
+        .AIAssistant-container,
+        #share-modal,
+        #entry-modal { 
+          display: none !important; 
+        }
+        
+        main { width: 100% !important; max-width: none !important; padding: 0 !important; margin: 0 !important; }
+        .grid-body-container { border: 2px solid #312e81 !important; border-radius: 0 !important; background: #312e81 !important; width: 100% !important; }
+        .square-box { 
+          border: 1px solid #e5e7eb !important; 
+          background-color: white !important; 
+          color: #1e1b4b !important;
+          print-color-adjust: exact !important;
+        }
+        .axis-label { 
+          background-color: #f3f4f6 !important; 
+          color: #1e1b4b !important;
+          border: 1px solid #d1d5db !important; 
+          print-color-adjust: exact !important;
+        }
+      }
+      #root { position: relative; z-index: 1; }
+      .scrollbar-hide::-webkit-scrollbar { display: none; }
+      .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+    <script>
+      // Enhanced print window logic
+      window.openPrintWindow = function(htmlContent) {
+        const printWindow = window.open('', '_blank', 'width=1200,height=800');
+        const styles = Array.from(document.querySelectorAll('style, link[rel="stylesheet"]'))
+          .map(s => s.outerHTML)
+          .join('');
+          
+        printWindow.document.write(`
+          <html>
+            <head>
+              <title>Print Grid - Charity Squares</title>
+              ${styles}
+              <style>
+                body { padding: 20px; background: white; }
+                .print-hidden { display: none !important; }
+              </style>
+            <link rel="stylesheet" href="/index.css">
+</head>
+            <body>
+              ${htmlContent}
+              <script>
+                window.onload = function() {
+                  window.focus();
+                  setTimeout(() => {
+                    window.print();
+                    // window.close(); // Optional: close after print
+                  }, 500);
+                };
+              <\/script>
   <script type="importmap">
 {
   "imports": {
@@ -22,9 +95,16 @@
   }
 }
 </script>
-  <script type="module" crossorigin src="/charitysuperbowl/assets/index-ihE0kClQ.js"></script>
+            <script type="module" src="/index.tsx"></script>
+</body>
+          </html>
+        `);
+        printWindow.document.close();
+      };
+    </script>
+
 </head>
   <body class="bg-gray-50 text-gray-900">
     <div id="root"></div>
-</body>
+  </body>
 </html>
