@@ -49,8 +49,23 @@
         }
       }
       #root { position: relative; z-index: 1; }
-      .scrollbar-hide::-webkit-scrollbar { display: none; }
-      .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+      
+      /* Custom Visible Scrollbars */
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 10px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
     </style>
     <script>
       // Enhanced print window logic
@@ -89,7 +104,7 @@
       }
     }
     </script>
-  <script type="module" crossorigin src="/charitysuperbowl/assets/index-BbsLK0yS.js"></script>
+  <script type="module" crossorigin src="/charitysuperbowl/assets/index-DnxpPkcC.js"></script>
 </head>
             <body>
               <div class="print-container">
