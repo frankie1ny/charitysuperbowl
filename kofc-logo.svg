@@ -1,0 +1,42 @@
+<svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <style>
+      .kofc-yellow { fill: #FFD800; stroke: #222; stroke-width: 2; }
+      .kofc-red { fill: #C8102E; }
+      .kofc-blue { fill: #003DA5; stroke: #222; stroke-width: 1; }
+      .kofc-white { fill: #FFFFFF; }
+      .kofc-text { font-family: Arial, Helvetica, sans-serif; font-weight: 700; font-size: 26px; text-anchor: middle; fill: #000000; }
+    </style>
+  </defs>
+
+  <!-- Star background (centered) -->
+  <g transform="translate(20,10) scale(0.9)">
+    <polygon points="100,10 136,70 196,70 152,110 180,180 100,140 20,180 48,110 4,70 64,70" class="kofc-yellow"/>
+    <polygon points="152,110 196,70 180,180" class="kofc-red" opacity="0.85"/>
+    <polygon points="48,110 4,70 20,180" class="kofc-red" opacity="0.85"/>
+    <text x="100" y="62" class="kofc-text">K OF C</text>
+
+    <!-- Shield -->
+    <rect x="56" y="88" width="88" height="112" rx="8" class="kofc-blue"/>
+
+    <!-- Cross -->
+    <g stroke="#FFFFFF" stroke-width="4" stroke-linecap="round">
+      <line x1="100" y1="108" x2="100" y2="180"/>
+      <line x1="76" y1="144" x2="124" y2="144"/>
+    </g>
+
+    <!-- Sword (left) -->
+    <g stroke="#FFFFFF" stroke-width="2" fill="none">
+      <line x1="78" y1="122" x2="88" y2="170"/>
+      <polygon points="75,120 72,128 78,125" class="kofc-white"/>
+    </g>
+
+    <!-- Anchor (right) -->
+    <g stroke="#FFFFFF" stroke-width="2" fill="none">
+      <circle cx="122" cy="122" r="3" class="kofc-white"/>
+      <line x1="122" y1="125" x2="122" y2="170"/>
+      <path d="M 118 170 Q 122 176 126 170" stroke="#FFFFFF" stroke-width="2"/>
+    </g>
+  </g>
+
+</svg>

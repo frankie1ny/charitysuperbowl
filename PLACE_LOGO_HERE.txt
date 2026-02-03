@@ -1,0 +1,8 @@
+Please place your logo file here as `logo.png`.
+
+Steps:
+1. Save the attached PNG image from the chat as `logo.png`.
+2. Put the file at `public/logo.png` in the project root.
+3. Restart the dev server (if running) or refresh the page; the header will load `/logo.png` automatically.
+
+Recommended: use a square PNG around 200x200 or smaller; Tailwind classes will scale it to fit the header.
