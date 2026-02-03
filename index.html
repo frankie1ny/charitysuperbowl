@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Super Bowl Charity Squares</title>
 
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -27,50 +30,46 @@
           -webkit-print-color-adjust: exact !important;
           print-color-adjust: exact !important;
         }
-        .print-hidden,
+
+        /* Hide UI chrome */
         .no-print,
         nav,
         footer,
-        .grid-controls,
-        .legend-container,
-        .status-bar,
         .assistant-btn,
         .AIAssistant-container,
         #share-modal,
         #entry-modal {
           display: none !important;
         }
+
         main {
           width: 100% !important;
           max-width: none !important;
           padding: 0 !important;
           margin: 0 !important;
         }
+
+        /* Grid styling */
         .grid-body-container {
           border: 2px solid #312e81 !important;
-          border-radius: 0 !important;
           background: #312e81 !important;
           width: 100% !important;
         }
+
         .square-box {
           border: 1px solid #e5e7eb !important;
           background-color: white !important;
           color: #1e1b4b !important;
-          print-color-adjust: exact !important;
         }
+
         .axis-label {
           background-color: #f3f4f6 !important;
           color: #1e1b4b !important;
           border: 1px solid #d1d5db !important;
-          print-color-adjust: exact !important;
         }
       }
 
-      #root {
-        position: relative;
-        z-index: 1;
-      }
-
+      /* Scrollbar styling */
       .custom-scrollbar::-webkit-scrollbar {
         width: 8px;
         height: 8px;
@@ -88,9 +87,17 @@
       }
     </style>
 
+    <!-- Bulletproof print window -->
     <script>
-      // Fully safe print window logic
-      window.openPrintWindow = function (htmlContent) {
+      window.openPrintWindow = function () {
+        const board = document.getElementById("board-container");
+        if (!board) {
+          alert("Board container not found.");
+          return;
+        }
+
+        const htmlContent = board.outerHTML;
+
         const printWindow = window.open("", "_blank", "width=1200,height=800");
         if (!printWindow) {
           alert("Please allow popups to use the Isolated Print View.");
@@ -106,26 +113,21 @@
         printWindow.document.write(`
           <html>
             <head>
-              <title>Print Grid - Charity Squares</title>
+              <title>Print - Charity Squares</title>
               ${styles}
               <style>
                 body { padding: 20px; background: white; }
-                .print-hidden { display: none !important; }
-                .grid-body-container { width: 100% !important; }
+                .no-print { display: none !important; }
               </style>
-              <link rel="stylesheet" href="/index.css">
             </head>
             <body>
-              <div class="print-container">
-                ${htmlContent}
-              </div>
+              ${htmlContent}
             </body>
           </html>
         `);
 
         printWindow.document.close();
 
-        // Inject script AFTER writing the document (bulletproof)
         const script = printWindow.document.createElement("script");
         script.textContent = `
           window.onload = function() {
@@ -137,6 +139,7 @@
       };
     </script>
 
+    <!-- Import map -->
     <script type="importmap">
       {
         "imports": {
@@ -153,7 +156,10 @@
   </head>
 
   <body class="bg-gray-50 text-gray-900">
-    <div id="root"></div>
+    <!-- Your entire board must be inside this container -->
+    <div id="board-container"></div>
+
+    <!-- React entry point -->
     <script type="module" src="index.tsx"></script>
   </body>
 </html>
