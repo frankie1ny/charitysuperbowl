@@ -44876,11 +44876,11 @@ This will remove the claim on Box #${id + 1}.`)) {
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-24 h-24 md:w-16 md:h-16 bg-white rounded-2xl flex-shrink-0 flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow cursor-pointer", onClick: () => setActiveTab("grid"), children: /* @__PURE__ */ jsxRuntimeExports.jsx(
           "img",
           {
-            src: `${"/charitysuperbowl/"}logo.png`,
+            src: `${"/"}logo.png`,
             alt: state.globalSettings.charityName,
             className: "w-20 h-20 md:w-14 md:h-14 object-contain",
             onError: (e) => {
-              e.currentTarget.src = `${"/charitysuperbowl/"}kofc-logo.svg`;
+              e.currentTarget.src = `${"/"}kofc-logo.svg`;
             }
           }
         ) }),
