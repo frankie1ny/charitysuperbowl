@@ -1,25 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kofc Charity Pools</title>
 
-    <!-- Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Super Bowl Charity Squares</title>
 
-    <!-- Font Awesome -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
-    <script type="module" crossorigin src="/charitysuperbowl/assets/index-wTuE8vBg.js"></script>
-  </head>
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-  <body class="bg-gray-50 text-gray-900">
-    <!-- React mounts here -->
-    <div id="root"></div>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
-    <!-- Vite React entry point -->
-  </body>
+
+  <!-- Bulletproof print window -->
+  <script>
+    window.openPrintWindow = function () {
+      const board = document.getElementById("board-container");
+      if (!board) {
+        alert("Board container not found.");
+        return;
+      }
+
+      const htmlContent = board.outerHTML;
+
+      const printWindow = window.open("", "_blank", "width=1200,height=800");
+      if (!printWindow) {
+        alert("Please allow popups to use the Isolated Print View.");
+        return;
+      }
+
+      const styles = Array.from(
+        document.querySelectorAll("style, link[rel='stylesheet']")
+      )
+        .map((s) => s.outerHTML)
+        .join("");
+
+      printWindow.document.write(`
+          <html>
+            <head>
+              <title>Print - Charity Squares</title>
+              ${styles}
+              <style>
+                body { padding: 20px; background: white; }
+                .no-print { display: none !important; }
+              </style>
+  <script type="importmap">
+      {
+        "imports": {
+          "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+          "@google/genai": "https://esm.sh/@google/genai@^1.38.0",
+          "react/": "https://esm.sh/react@^19.2.4/",
+          "react": "https://esm.sh/react@^19.2.4",
+          "firebase/app": "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js",
+          "firebase/database": "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js",
+          "firebase/": "https://esm.sh/firebase@^12.8.0/"
+        }
+      }
+    </script>
+              <script type="module" crossorigin src="/charitysuperbowl/assets/index-CSM7eTgC.js"></script>
+              <link rel="modulepreload" crossorigin href="/charitysuperbowl/assets/vendor-VKNFUXrR.js">
+              <link rel="modulepreload" crossorigin href="/charitysuperbowl/assets/react-DnXJJzMh.js">
+              <link rel="modulepreload" crossorigin href="/charitysuperbowl/assets/firebase-GSpa3bCz.js">
+            </head>
+            <body>
+              ${htmlContent}
+            </body>
+          </html>
+        `);
+
+      printWindow.document.close();
+
+      const script = printWindow.document.createElement("script");
+      script.textContent = `
+          window.onload = function() {
+            window.focus();
+            setTimeout(() => window.print(), 500);
+          };
+        `;
+      printWindow.document.body.appendChild(script);
+    };
+  </script>
+
+  <!-- Import map -->
+
+</head>
+
+<body class="bg-gray-50 text-gray-900">
+  <!-- Your entire board must be inside this container -->
+  <div id="board-container"></div>
+  <!-- React entry point -->
+</body>
+
 </html>

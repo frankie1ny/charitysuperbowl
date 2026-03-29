@@ -26,5 +26,24 @@ export default defineConfig(({ mode }) => {
         "@": path.resolve(__dirname, "."),
       },
     },
+
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              if (id.includes('react') || id.includes('react-dom')) {
+                return 'react';
+              }
+              if (id.includes('firebase')) {
+                return 'firebase';
+              }
+              // Add more libraries here as needed
+              return 'vendor';
+            }
+          }
+        }
+      }
+    },
   };
 });
