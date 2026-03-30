@@ -71,7 +71,8 @@ export interface GlobalSettings {
   // Default team logos (applied across pools unless overridden)
   teamALogo?: string;
   teamBLogo?: string;
-} 
+  rulesText?: string; // Custom rules for board printout
+}
 
 export interface PoolSettings {
   teamA: string;

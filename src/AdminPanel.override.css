@@ -1,0 +1,7 @@
+.admin-panel input,
+.admin-panel textarea {
+    background: #fff !important;
+    color: #222 !important;
+    pointer-events: auto !important;
+    opacity: 1 !important;
+}

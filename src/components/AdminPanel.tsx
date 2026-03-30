@@ -22,7 +22,7 @@ interface AdminPanelProps {
   /** Full/global participant registry (optional) — used when showing "all names" */
   allParticipants?: Participant[];
   onUnassignSquare: (id: number) => void;
-  onClearUserBoxes: (participantId: string) => void; 
+  onClearUserBoxes: (participantId: string) => void;
   onApplyPayment: (participantId: string, amount: number, method: string) => void;
   onEditPayment: (participantId: string, transactionId: string, amount: number, method: string) => void;
   onDeletePayment: (participantId: string, transactionId: string) => void;
@@ -39,14 +39,14 @@ interface AdminPanelProps {
 
 type AdminSection = 'overview' | 'pools' | 'settings' | 'axis' | 'participants' | 'winners' | 'stats' | 'global' | 'danger';
 
-const AdminPanel: React.FC<AdminPanelProps> = ({ 
+const AdminPanel: React.FC<AdminPanelProps> = ({
   activePoolId,
-  poolSettings, 
+  poolSettings,
   globalSettings,
-  onUpdatePoolSettings, 
+  onUpdatePoolSettings,
   onUpdateActivePool,
   onUpdateGlobalSettings,
-  onResetGrid, 
+  onResetGrid,
   onDeletePool,
   onGenerateNumbers,
   squares,
@@ -84,7 +84,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
     if (!updated.find(x => x.id === p.id)) updated.push(p);
     onUpdateActivePool({ participants: updated });
   };
-  
+
   const [newPoolData, setNewPoolData] = useState({
     name: '',
     teamA: 'NFC',
@@ -145,7 +145,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
     maxBytes = 150000,
     mime = 'image/webp',
     quality = 0.8
-  }: { maxWidth?: number; maxHeight?: number; maxBytes?: number; mime?: string; quality?: number } = {}) : Promise<Blob> => {
+  }: { maxWidth?: number; maxHeight?: number; maxBytes?: number; mime?: string; quality?: number } = {}): Promise<Blob> => {
     try {
       if (!file.type || file.type === 'image/svg+xml') return file; // skip SVG (keep original)
       const dataUrl = await fileToDataUrl(file);
@@ -354,12 +354,12 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
   const handleAddName = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newNameData.name.trim()) return;
-    
+
     // Check if name already exists (case-insensitive)
-    const nameExists = (activePool?.participants || []).some(p => 
+    const nameExists = (activePool?.participants || []).some(p =>
       p.name.toLowerCase() === newNameData.name.toLowerCase()
     );
-    
+
     if (nameExists) {
       alert(`"${newNameData.name}" already exists in the participant list.`);
       return;
@@ -442,7 +442,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-12">
+    <div className="admin-panel min-h-screen bg-gray-50 pb-12">
       {/* Header */}
       <header className="bg-indigo-900 text-white sticky top-0 z-40 shadow-xl">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 md:py-6">
@@ -452,7 +452,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
               <p className="text-[10px] text-indigo-300 font-bold uppercase tracking-widest">Master Grid Management</p>
             </div>
             <div className="flex gap-2">
-              <button onClick={() => { const dataStr = JSON.stringify(fullState, null, 2); const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr); const linkElement = document.createElement('a'); linkElement.setAttribute('href', dataUri); linkElement.setAttribute('download', 'grid-backup.json'); linkElement.click(); }} className="hidden md:inline-flex bg-white/10 text-white px-4 py-2 rounded-xl font-black uppercase text-[9px] hover:bg-white/20 transition-all"><i className="fas fa-download mr-2"></i>Backup</button>
+              <button onClick={() => { const dataStr = JSON.stringify(fullState, null, 2); const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr); const linkElement = document.createElement('a'); linkElement.setAttribute('href', dataUri); linkElement.setAttribute('download', 'grid-backup.json'); linkElement.click(); }} className="hidden md:inline-flex bg-white/10 text-white px-4 py-2 rounded-xl font-black uppercase text-[9px] hover:bg-white/20 transition-all"><i className="fas fa-download mr-2"></i>Backup</button>
               <button onClick={() => fileInputRef.current?.click()} className="hidden md:inline-flex bg-white/10 text-white px-4 py-2 rounded-xl font-black uppercase text-[9px] hover:bg-white/20 transition-all"><i className="fas fa-upload mr-2"></i>Restore</button>
               <button onClick={() => {
                 try {
@@ -495,7 +495,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
 
                     participants.forEach((p: any) => {
                       const pid = p.id;
-                      const boxList = (squaresByParticipant[pid] || []).slice().sort((a,b)=>a-b).map((n:any) => (typeof n==='number' ? (n+1) : n));
+                      const boxList = (squaresByParticipant[pid] || []).slice().sort((a, b) => a - b).map((n: any) => (typeof n === 'number' ? (n + 1) : n));
                       const boxCount = boxList.length;
                       const totalDue = boxCount * costPerBox;
                       const totalPaid = (p.paymentHistory || []).reduce((s: number, t: any) => s + (t.amount || 0), 0);
@@ -504,20 +504,20 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                     });
 
                     Object.keys(squaresByParticipant).forEach(pid => {
-                      const found = (participants || []).find((p:any)=>p.id===pid);
+                      const found = (participants || []).find((p: any) => p.id === pid);
                       if (!found) {
-                        const boxList = (squaresByParticipant[pid] || []).slice().sort((a:any,b:any)=>a-b).map((n:any) => (typeof n==='number' ? (n+1) : n));
+                        const boxList = (squaresByParticipant[pid] || []).slice().sort((a: any, b: any) => a - b).map((n: any) => (typeof n === 'number' ? (n + 1) : n));
                         const boxCount = boxList.length;
                         const totalDue = boxCount * costPerBox;
-                        agingRows.push([poolName,'','','','',boxCount,boxList.join(';'),costPerBox,totalDue,0,totalDue]);
+                        agingRows.push([poolName, '', '', '', '', boxCount, boxList.join(';'), costPerBox, totalDue, 0, totalDue]);
                       }
                     });
 
                     gridRows.push([poolName, (pool.settings && pool.settings.rowNumbers) ? pool.settings.rowNumbers.join(';') : '', (pool.settings && pool.settings.colNumbers) ? pool.settings.colNumbers.join(';') : '']);
                   });
 
-                  const agingCSV = makeCSV(['Pool','Alias','Name','Email','Phone','BoxesPlayed','BoxIDs','CostPerBox','TotalDue','TotalPaid','Outstanding'], agingRows);
-                  const gridCSV = makeCSV(['Pool','RowNumbers','ColNumbers'], gridRows);
+                  const agingCSV = makeCSV(['Pool', 'Alias', 'Name', 'Email', 'Phone', 'BoxesPlayed', 'BoxIDs', 'CostPerBox', 'TotalDue', 'TotalPaid', 'Outstanding'], agingRows);
+                  const gridCSV = makeCSV(['Pool', 'RowNumbers', 'ColNumbers'], gridRows);
 
                   const download = (name: string, content: string, mime = 'text/csv') => {
                     const uri = 'data:' + mime + ';charset=utf-8,' + encodeURIComponent(content);
@@ -548,11 +548,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
               <button
                 key={item.id}
                 onClick={() => setActiveSection(item.id)}
-                className={`w-full text-left px-6 py-4 font-black uppercase text-[11px] tracking-wide transition-all flex items-center gap-3 ${
-                  activeSection === item.id
-                    ? 'bg-indigo-900 text-white'
-                    : 'text-indigo-900 hover:bg-indigo-50'
-                }`}
+                className={`w-full text-left px-6 py-4 font-black uppercase text-[11px] tracking-wide transition-all flex items-center gap-3 ${activeSection === item.id
+                  ? 'bg-indigo-900 text-white'
+                  : 'text-indigo-900 hover:bg-indigo-50'
+                  }`}
               >
                 <i className={`fas ${item.icon} w-4 text-center`}></i>
                 {item.label}
@@ -599,10 +598,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                 {showCreateForm ? (
                   <form onSubmit={handleCreatePool} className="bg-indigo-50 p-8 rounded-3xl border border-indigo-100 space-y-6 animate-in slide-in-from-top-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div><label className="text-[9px] font-black text-indigo-400 uppercase block mb-1">Grid Name</label><input required value={newPoolData.name} onChange={e => setNewPoolData({...newPoolData, name: e.target.value})} className="w-full p-4 bg-white rounded-xl font-bold outline-none" placeholder="e.g. 2025 Big Game" /></div>
-                      <div><label className="text-[9px] font-black text-indigo-400 uppercase block mb-1">Cost Per Box ($)</label><input type="number" required value={newPoolData.costPerBox} onChange={e => setNewPoolData({...newPoolData, costPerBox: Number(e.target.value)})} className="w-full p-4 bg-white rounded-xl font-bold outline-none" /></div>
-                      <div><label className="text-[9px] font-black text-indigo-400 uppercase block mb-1">Vertical Team (Rows)</label><input required value={newPoolData.teamA} onChange={e => setNewPoolData({...newPoolData, teamA: e.target.value})} className="w-full p-4 bg-white rounded-xl font-bold outline-none" /></div>
-                      <div><label className="text-[9px] font-black text-indigo-400 uppercase block mb-1">Horizontal Team (Cols)</label><input required value={newPoolData.teamB} onChange={e => setNewPoolData({...newPoolData, teamB: e.target.value})} className="w-full p-4 bg-white rounded-xl font-bold outline-none" /></div>
+                      <div><label className="text-[9px] font-black text-indigo-400 uppercase block mb-1">Grid Name</label><input required value={newPoolData.name} onChange={e => setNewPoolData({ ...newPoolData, name: e.target.value })} className="w-full p-4 bg-white rounded-xl font-bold outline-none" placeholder="e.g. 2025 Big Game" /></div>
+                      <div><label className="text-[9px] font-black text-indigo-400 uppercase block mb-1">Cost Per Box ($)</label><input type="number" required value={newPoolData.costPerBox} onChange={e => setNewPoolData({ ...newPoolData, costPerBox: Number(e.target.value) })} className="w-full p-4 bg-white rounded-xl font-bold outline-none" /></div>
+                      <div><label className="text-[9px] font-black text-indigo-400 uppercase block mb-1">Vertical Team (Rows)</label><input required value={newPoolData.teamA} onChange={e => setNewPoolData({ ...newPoolData, teamA: e.target.value })} className="w-full p-4 bg-white rounded-xl font-bold outline-none" /></div>
+                      <div><label className="text-[9px] font-black text-indigo-400 uppercase block mb-1">Horizontal Team (Cols)</label><input required value={newPoolData.teamB} onChange={e => setNewPoolData({ ...newPoolData, teamB: e.target.value })} className="w-full p-4 bg-white rounded-xl font-bold outline-none" /></div>
                     </div>
                     <button type="submit" className="w-full py-4 bg-indigo-900 text-white rounded-xl font-black uppercase text-xs tracking-widest shadow-xl hover:bg-black transition-all">Initialize Contest Grid</button>
                   </form>
@@ -632,21 +631,21 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="md:col-span-2">
                     <label className="text-[9px] font-black text-indigo-400 uppercase block mb-1">Grid Display Name</label>
-                    <input 
-                      value={activePool?.name || ''} 
-                      onChange={e => onUpdateActivePool({ name: e.target.value })} 
-                      className="w-full p-4 bg-indigo-50 border-none rounded-xl font-black text-indigo-900 uppercase text-sm md:text-lg outline-none focus:ring-4 focus:ring-indigo-500/10" 
+                    <input
+                      value={activePool?.name || ''}
+                      onChange={e => onUpdateActivePool({ name: e.target.value })}
+                      className="w-full p-4 bg-indigo-50 border-none rounded-xl font-black text-indigo-900 uppercase text-sm md:text-lg outline-none focus:ring-4 focus:ring-indigo-500/10"
                     />
                   </div>
                   <div className="bg-green-50/50 p-6 rounded-3xl border border-green-100">
                     <label className="text-[9px] font-black text-green-600 uppercase block mb-2">Cost Per Box ($)</label>
                     <div className="relative">
                       <span className="absolute left-0 top-1/2 -translate-y-1/2 text-xl font-black text-green-300">$</span>
-                      <input 
-                        type="number" 
-                        value={poolSettings.costPerBox} 
-                        onChange={e => onUpdatePoolSettings({ costPerBox: Number(e.target.value) })} 
-                        className="w-full pl-6 pr-4 py-2 bg-transparent border-none font-black text-3xl text-green-700 outline-none" 
+                      <input
+                        type="number"
+                        value={poolSettings.costPerBox}
+                        onChange={e => onUpdatePoolSettings({ costPerBox: Number(e.target.value) })}
+                        className="w-full pl-6 pr-4 py-2 bg-transparent border-none font-black text-3xl text-green-700 outline-none"
                       />
                     </div>
                     <p className="text-[8px] font-bold text-green-600 uppercase mt-2">Adjusting this updates all prize/payout estimates.</p>
@@ -654,18 +653,18 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                   <div className="grid grid-cols-1 gap-4">
                     <div>
                       <label className="text-[9px] font-black text-indigo-400 uppercase block mb-1">Vertical Team (Rows)</label>
-                      <input 
-                        value={poolSettings.teamA} 
-                        onChange={e => onUpdatePoolSettings({ teamA: e.target.value })} 
-                        className="w-full p-4 bg-gray-50 rounded-xl font-bold text-indigo-900 uppercase text-xs outline-none focus:ring-2 focus:ring-indigo-500" 
+                      <input
+                        value={poolSettings.teamA}
+                        onChange={e => onUpdatePoolSettings({ teamA: e.target.value })}
+                        className="w-full p-4 bg-gray-50 rounded-xl font-bold text-indigo-900 uppercase text-xs outline-none focus:ring-2 focus:ring-indigo-500"
                       />
                     </div>
                     <div>
                       <label className="text-[9px] font-black text-indigo-400 uppercase block mb-1">Horizontal Team (Cols)</label>
-                      <input 
-                        value={poolSettings.teamB} 
-                        onChange={e => onUpdatePoolSettings({ teamB: e.target.value })} 
-                        className="w-full p-4 bg-gray-50 rounded-xl font-bold text-indigo-900 uppercase text-xs outline-none focus:ring-2 focus:ring-indigo-500" 
+                      <input
+                        value={poolSettings.teamB}
+                        onChange={e => onUpdatePoolSettings({ teamB: e.target.value })}
+                        className="w-full p-4 bg-gray-50 rounded-xl font-bold text-indigo-900 uppercase text-xs outline-none focus:ring-2 focus:ring-indigo-500"
                       />
                     </div>
 
@@ -673,12 +672,12 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                       <label className="text-[9px] font-black text-indigo-400 uppercase block mb-1">Team A Logo (override URL — leave blank to use default)</label>
                       <div className="flex gap-3">
                         <div className="flex gap-3 items-center">
-                          <input value={poolSettings.teamALogo || ''} onChange={e => onUpdatePoolSettings({ teamALogo: e.target.value })} onBlur={e => setAndValidateLogoUrl('pool','A', e.target.value)} className="flex-1 p-3 bg-white rounded-xl outline-none" placeholder="https://.../logo.png" />
+                          <input value={poolSettings.teamALogo || ''} onChange={e => onUpdatePoolSettings({ teamALogo: e.target.value })} onBlur={e => setAndValidateLogoUrl('pool', 'A', e.target.value)} className="flex-1 p-3 bg-white rounded-xl outline-none" placeholder="https://.../logo.png" />
 
                           <input id="pool-teamA-file" type="file" accept="image/*" onChange={(e) => { const f = e.target.files?.[0]; if (f) handleLogoFile(f, 'pool', 'A'); e.currentTarget.value = ''; }} className="hidden" />
                           <button onClick={() => document.getElementById('pool-teamA-file')?.click()} className="px-3 py-2 bg-indigo-50 text-indigo-700 rounded-xl font-black">Upload</button>
 
-                          {globalSettings?.dropboxAppKey && <button onClick={() => handleChooseFromDropbox('pool','A')} className="px-3 py-2 bg-indigo-50 text-indigo-700 rounded-xl font-black">Dropbox</button>}
+                          {globalSettings?.dropboxAppKey && <button onClick={() => handleChooseFromDropbox('pool', 'A')} className="px-3 py-2 bg-indigo-50 text-indigo-700 rounded-xl font-black">Dropbox</button>}
                           {globalSettings?.githubToken && globalSettings?.githubRepo && (
                             <label className="px-3 py-2 bg-indigo-50 text-indigo-700 rounded-xl font-black cursor-pointer">
                               GH
@@ -696,12 +695,12 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                       <label className="text-[9px] font-black text-indigo-400 uppercase block mb-1">Team B Logo (override URL — leave blank to use default)</label>
                       <div className="flex gap-3">
                         <div className="flex gap-3 items-center">
-                          <input value={poolSettings.teamBLogo || ''} onChange={e => onUpdatePoolSettings({ teamBLogo: e.target.value })} onBlur={e => setAndValidateLogoUrl('pool','B', e.target.value)} className="flex-1 p-3 bg-white rounded-xl outline-none" placeholder="https://.../logo.png" />
+                          <input value={poolSettings.teamBLogo || ''} onChange={e => onUpdatePoolSettings({ teamBLogo: e.target.value })} onBlur={e => setAndValidateLogoUrl('pool', 'B', e.target.value)} className="flex-1 p-3 bg-white rounded-xl outline-none" placeholder="https://.../logo.png" />
 
                           <input id="pool-teamB-file" type="file" accept="image/*" onChange={(e) => { const f = e.target.files?.[0]; if (f) handleLogoFile(f, 'pool', 'B'); e.currentTarget.value = ''; }} className="hidden" />
                           <button onClick={() => document.getElementById('pool-teamB-file')?.click()} className="px-3 py-2 bg-indigo-50 text-indigo-700 rounded-xl font-black">Upload</button>
 
-                          {globalSettings?.dropboxAppKey && <button onClick={() => handleChooseFromDropbox('pool','B')} className="px-3 py-2 bg-indigo-50 text-indigo-700 rounded-xl font-black">Dropbox</button>}
+                          {globalSettings?.dropboxAppKey && <button onClick={() => handleChooseFromDropbox('pool', 'B')} className="px-3 py-2 bg-indigo-50 text-indigo-700 rounded-xl font-black">Dropbox</button>}
                           {globalSettings?.githubToken && globalSettings?.githubRepo && (
                             <label className="px-3 py-2 bg-indigo-50 text-indigo-700 rounded-xl font-black cursor-pointer">
                               GH
@@ -824,10 +823,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                   <form onSubmit={handleAddName} className="bg-indigo-50 p-8 rounded-3xl border border-indigo-100 space-y-6 animate-in slide-in-from-top-4">
                     <p className="text-[10px] text-indigo-600 font-black uppercase">Alias is optional now and can be set when they pick a box</p>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div><label className="text-[9px] font-black text-indigo-400 uppercase block mb-1">Full Name</label><input required value={newNameData.name} onChange={e => setNewNameData({...newNameData, name: e.target.value})} className="w-full p-4 bg-white rounded-xl font-bold outline-none" placeholder="e.g. John Smith" /></div>
-                      <div><label className="text-[9px] font-black text-indigo-400 uppercase block mb-1">Email (Optional)</label><input type="email" value={newNameData.email} onChange={e => setNewNameData({...newNameData, email: e.target.value})} className="w-full p-4 bg-white rounded-xl font-bold outline-none" placeholder="john@example.com" /></div>
-                      <div><label className="text-[9px] font-black text-indigo-400 uppercase block mb-1">Phone (Optional)</label><input type="tel" value={newNameData.phone} onChange={e => setNewNameData({...newNameData, phone: e.target.value})} className="w-full p-4 bg-white rounded-xl font-bold outline-none" placeholder="555-1234" /></div>
-                      <div><label className="text-[9px] font-black text-indigo-400 uppercase block mb-1">Alias (Optional for now)</label><input value={newNameData.alias} onChange={e => setNewNameData({...newNameData, alias: e.target.value})} className="w-full p-4 bg-white rounded-xl font-bold outline-none" placeholder="e.g. JSmith" /></div>
+                      <div><label className="text-[9px] font-black text-indigo-400 uppercase block mb-1">Full Name</label><input required value={newNameData.name} onChange={e => setNewNameData({ ...newNameData, name: e.target.value })} className="w-full p-4 bg-white rounded-xl font-bold outline-none" placeholder="e.g. John Smith" /></div>
+                      <div><label className="text-[9px] font-black text-indigo-400 uppercase block mb-1">Email (Optional)</label><input type="email" value={newNameData.email} onChange={e => setNewNameData({ ...newNameData, email: e.target.value })} className="w-full p-4 bg-white rounded-xl font-bold outline-none" placeholder="john@example.com" /></div>
+                      <div><label className="text-[9px] font-black text-indigo-400 uppercase block mb-1">Phone (Optional)</label><input type="tel" value={newNameData.phone} onChange={e => setNewNameData({ ...newNameData, phone: e.target.value })} className="w-full p-4 bg-white rounded-xl font-bold outline-none" placeholder="555-1234" /></div>
+                      <div><label className="text-[9px] font-black text-indigo-400 uppercase block mb-1">Alias (Optional for now)</label><input value={newNameData.alias} onChange={e => setNewNameData({ ...newNameData, alias: e.target.value })} className="w-full p-4 bg-white rounded-xl font-bold outline-none" placeholder="e.g. JSmith" /></div>
                     </div>
                     <button type="submit" className="w-full py-4 bg-indigo-900 text-white rounded-xl font-black uppercase text-xs tracking-widest shadow-xl hover:bg-black transition-all">Add to Participant List</button>
                   </form>
@@ -924,12 +923,12 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
 
             {/* Winners Section */}
             {activeSection === 'winners' && (
-              <Winners activePool={activePool!} settings={{...globalSettings, ...poolSettings}} onAddScore={onAddScore} onUpdateScore={onUpdateScore} onDeleteScore={onDeleteScore} isAdmin={true} />
+              <Winners activePool={activePool!} settings={{ ...globalSettings, ...poolSettings }} onAddScore={onAddScore} onUpdateScore={onUpdateScore} onDeleteScore={onDeleteScore} isAdmin={true} />
             )}
 
             {/* Stats Section */}
             {activeSection === 'stats' && (
-              <Stats squares={squares} participants={participants} settings={{...globalSettings, ...poolSettings}} onUpdateSquare={onUpdateSquare} onUpdateParticipant={onUpdateParticipant} onUnassignSquare={onUnassignSquare} onClearUserBoxes={onClearUserBoxes} onApplyPayment={onApplyPayment} onEditPayment={onEditPayment} onDeletePayment={onDeletePayment} />
+              <Stats squares={squares} participants={participants} settings={{ ...globalSettings, ...poolSettings }} onUpdateSquare={onUpdateSquare} onUpdateParticipant={onUpdateParticipant} onUnassignSquare={onUnassignSquare} onClearUserBoxes={onClearUserBoxes} onApplyPayment={onApplyPayment} onEditPayment={onEditPayment} onDeletePayment={onDeletePayment} />
             )}
 
             {/* Global Organization Settings Section */}
@@ -938,6 +937,17 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                 <h3 className="text-xl font-black text-indigo-900 uppercase">Global Organization Settings</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div><label className="text-[9px] font-black text-indigo-400 uppercase mb-1 block">Main Organization/Charity Name</label><input onFocus={(e) => e.target.select()} value={globalSettings?.charityName || ''} onChange={e => onUpdateGlobalSettings({ charityName: e.target.value })} className="w-full px-5 py-4 bg-indigo-50 border-none rounded-2xl font-black text-indigo-900 uppercase text-sm" /></div>
+
+                  <div>
+                    <label className="text-[9px] font-black text-indigo-400 uppercase mb-1 block">Board Rules (for printout)</label>
+                    <textarea
+                      value={globalSettings?.rulesText || ''}
+                      onChange={e => onUpdateGlobalSettings({ rulesText: e.target.value })}
+                      className="w-full px-5 py-4 bg-indigo-50 border-none rounded-2xl font-mono text-indigo-900 text-xs min-h-[120px]"
+                      placeholder={"How to Play:\n- Pick any open square(s) on the board and claim with your name/alias.\n- Once all squares are filled, the numbers 0-9 are randomly assigned to each row and column.\n- At the end of each quarter, the last digit of each team's score determines the winning square (row = Team A, column = Team B).\n- Payouts and charity split are shown in the contest details.\n- Pay for your squares using the provided payment options. Unpaid squares may be reassigned.\n- See the 'Winners' tab for live results and payout info."}
+                    />
+                    <p className="text-[9px] text-gray-400 mt-1">This text appears at the top of the printed board. Leave blank to use the default rules.</p>
+                  </div>
                   <div><label className="text-[9px] font-black text-indigo-400 uppercase mb-1 block">Administrative Password</label><input type="text" onFocus={(e) => e.target.select()} value={globalSettings?.adminPassword || ''} onChange={e => onUpdateGlobalSettings({ adminPassword: e.target.value })} className="w-full px-5 py-4 bg-gray-50 border-none rounded-2xl font-black text-indigo-900 uppercase text-sm" /></div>
                   <div><label className="text-[9px] font-black text-indigo-400 uppercase mb-1 block">Venmo Link/Username</label><input type="text" value={globalSettings?.venmoAccount || ''} onChange={e => onUpdateGlobalSettings({ venmoAccount: e.target.value })} className="w-full px-5 py-4 bg-blue-50/50 rounded-2xl font-black text-indigo-900 text-sm" /></div>
                   <div><label className="text-[9px] font-black text-indigo-400 uppercase mb-1 block">Zelle Account Info</label><input type="text" value={globalSettings?.zelleAccount || ''} onChange={e => onUpdateGlobalSettings({ zelleAccount: e.target.value })} className="w-full px-5 py-4 bg-purple-50 rounded-2xl font-black text-indigo-900 text-sm" /></div>
@@ -946,12 +956,12 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                     <label className="text-[9px] font-black text-indigo-400 uppercase mb-1 block">Default Team A Logo (URL)</label>
                     <div className="flex gap-3">
                       <div className="flex gap-3 items-center">
-                        <input value={teamALogoInput} onChange={e => setTeamALogoInput(e.target.value)} onBlur={async (e) => { const saved = await setAndValidateLogoUrl('global','A', teamALogoInput); if (!saved) setTeamALogoInput(globalSettings?.teamALogo || ''); }} className="flex-1 px-5 py-3 bg-white rounded-2xl font-black text-indigo-900 text-sm" placeholder="https://.../logo.png" />
+                        <input value={teamALogoInput} onChange={e => setTeamALogoInput(e.target.value)} onBlur={async (e) => { const saved = await setAndValidateLogoUrl('global', 'A', teamALogoInput); if (!saved) setTeamALogoInput(globalSettings?.teamALogo || ''); }} className="flex-1 px-5 py-3 bg-white rounded-2xl font-black text-indigo-900 text-sm" placeholder="https://.../logo.png" />
 
                         <input id="global-teamA-file" type="file" accept="image/*" onChange={(e) => { const f = e.target.files?.[0]; if (f) handleLogoFile(f, 'global', 'A'); e.currentTarget.value = ''; }} className="hidden" />
                         <button onClick={() => document.getElementById('global-teamA-file')?.click()} className="px-3 py-2 bg-indigo-50 text-indigo-700 rounded-xl font-black">Upload</button>
 
-                        {globalSettings?.dropboxAppKey && <button onClick={() => handleChooseFromDropbox('global','A')} className="px-3 py-2 bg-indigo-50 text-indigo-700 rounded-xl font-black">Dropbox</button>}
+                        {globalSettings?.dropboxAppKey && <button onClick={() => handleChooseFromDropbox('global', 'A')} className="px-3 py-2 bg-indigo-50 text-indigo-700 rounded-xl font-black">Dropbox</button>}
                         {globalSettings?.githubToken && globalSettings?.githubRepo && (
                           <label className="px-3 py-2 bg-indigo-50 text-indigo-700 rounded-xl font-black cursor-pointer">
                             GH
@@ -978,12 +988,12 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                   <div>
                     <label className="text-[9px] font-black text-indigo-400 uppercase mb-1 block">Default Team B Logo (URL)</label>
                     <div className="flex gap-3 items-center">
-                      <input value={teamBLogoInput} onChange={e => setTeamBLogoInput(e.target.value)} onBlur={async (e) => { const saved = await setAndValidateLogoUrl('global','B', teamBLogoInput); if (!saved) setTeamBLogoInput(globalSettings?.teamBLogo || ''); }} className="flex-1 px-5 py-3 bg-white rounded-2xl font-black text-indigo-900 text-sm" placeholder="https://.../logo.png" />
+                      <input value={teamBLogoInput} onChange={e => setTeamBLogoInput(e.target.value)} onBlur={async (e) => { const saved = await setAndValidateLogoUrl('global', 'B', teamBLogoInput); if (!saved) setTeamBLogoInput(globalSettings?.teamBLogo || ''); }} className="flex-1 px-5 py-3 bg-white rounded-2xl font-black text-indigo-900 text-sm" placeholder="https://.../logo.png" />
 
                       <input id="global-teamB-file" type="file" accept="image/*" onChange={(e) => { const f = e.target.files?.[0]; if (f) handleLogoFile(f, 'global', 'B'); e.currentTarget.value = ''; }} className="hidden" />
                       <button onClick={() => document.getElementById('global-teamB-file')?.click()} className="px-3 py-2 bg-indigo-50 text-indigo-700 rounded-xl font-black">Upload</button>
 
-                      {globalSettings?.dropboxAppKey && <button onClick={() => handleChooseFromDropbox('global','B')} className="px-3 py-2 bg-indigo-50 text-indigo-700 rounded-xl font-black">Dropbox</button>}
+                      {globalSettings?.dropboxAppKey && <button onClick={() => handleChooseFromDropbox('global', 'B')} className="px-3 py-2 bg-indigo-50 text-indigo-700 rounded-xl font-black">Dropbox</button>}
                       {globalSettings?.githubToken && globalSettings?.githubRepo && (
                         <label className="px-3 py-2 bg-indigo-50 text-indigo-700 rounded-xl font-black cursor-pointer">
                           GH

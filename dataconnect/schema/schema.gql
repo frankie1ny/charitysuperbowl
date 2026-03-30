@@ -1,0 +1,39 @@
+type User @table {
+  displayName: String!
+  email: String
+  photoUrl: String
+  createdAt: Timestamp!
+}
+
+type Charity @table {
+  name: String!
+  description: String
+  websiteUrl: String
+  logoUrl: String
+  createdAt: Timestamp!
+}
+
+type Pool @table {
+  name: String!
+  description: String
+  goalAmount: Float!
+  endDate: Timestamp
+  isPublic: Boolean
+  createdAt: Timestamp!
+  creator: User!
+  charity: Charity!
+}
+
+type Donation @table {
+  amount: Float!
+  isAnonymous: Boolean
+  createdAt: Timestamp!
+  user: User!
+  pool: Pool!
+}
+
+type Membership @table(key: ["user", "pool"]) {
+  createdAt: Timestamp!
+  user: User!
+  pool: Pool!
+}

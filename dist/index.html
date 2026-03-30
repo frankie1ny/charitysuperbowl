@@ -9,20 +9,30 @@
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
+
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+
+  <!-- Print styles for board printout -->
+  <link rel="stylesheet" href="data:text/css;base64,QG1lZGlhIHByaW50IHsNCg0KICAgIGJvZHksDQogICAgaHRtbCB7DQogICAgICAgIGJhY2tncm91bmQ6ICNmZmYgIWltcG9ydGFudDsNCiAgICAgICAgY29sb3I6ICMwMDAgIWltcG9ydGFudDsNCiAgICAgICAgLXdlYmtpdC1wcmludC1jb2xvci1hZGp1c3Q6IGV4YWN0Ow0KICAgICAgICBwcmludC1jb2xvci1hZGp1c3Q6IGV4YWN0Ow0KICAgIH0NCg0KICAgIC8qIEhpZGUgYWxsIGRpcmVjdCBjaGlsZHJlbiBvZiBib2R5IGV4Y2VwdCAucHJpbnQtaGVhZGVyIGFuZCAuZ3JpZC1pbm5lci1jb250ZW50J3MgdG9wIGFuY2VzdG9yICovDQogICAgYm9keT4qOm5vdCgucHJpbnQtaGVhZGVyKTpub3QoLnByaW50LWJvYXJkLXJvb3QpIHsNCiAgICAgICAgZGlzcGxheTogbm9uZSAhaW1wb3J0YW50Ow0KICAgIH0NCg0KICAgIC8qIEVuc3VyZSAucHJpbnQtaGVhZGVyIGFuZCB0aGUgYm9hcmQgZ3JpZCBhcmUgdmlzaWJsZSAqLw0KICAgIC5wcmludC1oZWFkZXIsDQogICAgLnByaW50LWhlYWRlciAqLA0KICAgIC5wcmludC1ib2FyZC1yb290LA0KICAgIC5wcmludC1ib2FyZC1yb290ICogew0KICAgICAgICBkaXNwbGF5OiByZXZlcnQgIWltcG9ydGFudDsNCiAgICAgICAgdmlzaWJpbGl0eTogdmlzaWJsZSAhaW1wb3J0YW50Ow0KICAgICAgICBjb2xvcjogaW5oZXJpdCAhaW1wb3J0YW50Ow0KICAgICAgICBiYWNrZ3JvdW5kOiBpbmhlcml0ICFpbXBvcnRhbnQ7DQogICAgfQ0KDQogICAgLnByaW50LWhlYWRlciB7DQogICAgICAgIGJveC1zaGFkb3c6IG5vbmUgIWltcG9ydGFudDsNCiAgICAgICAgbWFyZ2luLWJvdHRvbTogMCAhaW1wb3J0YW50Ow0KICAgICAgICBwYWRkaW5nOiAwLjVyZW0gIWltcG9ydGFudDsNCiAgICAgICAgYmFja2dyb3VuZDogI2ZmZiAhaW1wb3J0YW50Ow0KICAgICAgICBwYWdlLWJyZWFrLWFmdGVyOiBhdm9pZDsNCiAgICB9DQoNCiAgICAucHJpbnQtaGVhZGVyIGJ1dHRvbiB7DQogICAgICAgIGRpc3BsYXk6IG5vbmUgIWltcG9ydGFudDsNCiAgICB9DQoNCiAgICAuZ3JpZC1pbm5lci1jb250ZW50IHsNCiAgICAgICAgem9vbTogMSAhaW1wb3J0YW50Ow0KICAgICAgICB0cmFuc2Zvcm06IG5vbmUgIWltcG9ydGFudDsNCiAgICAgICAgd2lkdGg6IDEwMCUgIWltcG9ydGFudDsNCiAgICAgICAgbWF4LXdpZHRoOiAxMDB2dyAhaW1wb3J0YW50Ow0KICAgIH0NCg0KICAgIEBwYWdlIHsNCiAgICAgICAgc2l6ZTogYXV0bzsNCiAgICAgICAgbWFyZ2luOiAwLjVpbjsNCiAgICB9DQp9" media="print" />
+
+  <!-- Admin panel field override -->
 
 
   <!-- Bulletproof print window -->
   <script>
     window.openPrintWindow = function () {
+
       const board = document.getElementById("board-container");
+      console.log("[Print Debug] board-container:", board);
       if (!board) {
         alert("Board container not found.");
         return;
       }
 
       const htmlContent = board.outerHTML;
+      console.log("[Print Debug] htmlContent:", htmlContent);
 
       const printWindow = window.open("", "_blank", "width=1200,height=800");
       if (!printWindow) {
@@ -37,14 +47,14 @@
         .join("");
 
       printWindow.document.write(`
-          <html>
-            <head>
-              <title>Print - Charity Squares</title>
-              ${styles}
-              <style>
-                body { padding: 20px; background: white; }
-                .no-print { display: none !important; }
-              </style>
+        <html>
+          <head>
+            <title>Print - Charity Squares</title>
+            ${styles}
+            <style>
+              body { padding: 20px; background: white; }
+              .no-print { display: none !important; }
+            </style>
   <script type="importmap">
       {
         "imports": {
@@ -58,27 +68,24 @@
         }
       }
     </script>
-              <script type="module" crossorigin src="/charitysuperbowl/assets/index-CSM7eTgC.js"></script>
-              <link rel="modulepreload" crossorigin href="/charitysuperbowl/assets/vendor-VKNFUXrR.js">
-              <link rel="modulepreload" crossorigin href="/charitysuperbowl/assets/react-DnXJJzMh.js">
-              <link rel="modulepreload" crossorigin href="/charitysuperbowl/assets/firebase-GSpa3bCz.js">
-            </head>
-            <body>
-              ${htmlContent}
-            </body>
-          </html>
-        `);
-
-      printWindow.document.close();
-
-      const script = printWindow.document.createElement("script");
-      script.textContent = `
-          window.onload = function() {
-            window.focus();
-            setTimeout(() => window.print(), 500);
-          };
-        `;
-      printWindow.document.body.appendChild(script);
+            <script type="module" crossorigin src="/assets/index-ekUYuESR.js"></script>
+            <link rel="modulepreload" crossorigin href="/assets/vendor-VKNFUXrR.js">
+            <link rel="modulepreload" crossorigin href="/assets/react-DnXJJzMh.js">
+            <link rel="modulepreload" crossorigin href="/assets/firebase-GSpa3bCz.js">
+            <link rel="stylesheet" crossorigin href="/assets/index-BXfIMQId.css">
+          </head>
+          <body>
+            ${htmlContent}
+            <script>
+              window.onload = function() {
+                window.focus();
+                setTimeout(() => window.print(), 500);
+              };
+            <\/script>
+          </body>
+        </html>
+      `);
+      setTimeout(() => printWindow.document.close(), 250);
     };
   </script>
 
@@ -88,7 +95,7 @@
 
 <body class="bg-gray-50 text-gray-900">
   <!-- Your entire board must be inside this container -->
-  <div id="board-container"></div>
+  <div id="root"></div>
   <!-- React entry point -->
 </body>
 

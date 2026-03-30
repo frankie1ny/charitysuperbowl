@@ -6,8 +6,8 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, ".", "");
 
   return {
-    // Use "/" in dev, "/charitysuperbowl/" in production
-    base: mode === "development" ? "/" : "/charitysuperbowl/",
+    // Use "/" for both dev and production when using a custom domain
+    base: '/',
 
     server: {
       port: 3000,

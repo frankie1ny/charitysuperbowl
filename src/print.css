@@ -1,0 +1,50 @@
+@media print {
+
+    body,
+    html {
+        background: #fff !important;
+        color: #000 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* Hide all direct children of body except .print-header and .grid-inner-content's top ancestor */
+    body>*:not(.print-header):not(.print-board-root) {
+        display: none !important;
+    }
+
+    /* Ensure .print-header and the board grid are visible */
+    .print-header,
+    .print-header *,
+    .print-board-root,
+    .print-board-root * {
+        display: revert !important;
+        visibility: visible !important;
+        color: inherit !important;
+        background: inherit !important;
+    }
+
+    .print-header {
+        box-shadow: none !important;
+        margin-bottom: 0 !important;
+        padding: 0.5rem !important;
+        background: #fff !important;
+        page-break-after: avoid;
+    }
+
+    .print-header button {
+        display: none !important;
+    }
+
+    .grid-inner-content {
+        zoom: 1 !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+    }
+
+    @page {
+        size: auto;
+        margin: 0.5in;
+    }
+}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Print Test</title>
+    <script>
+        window.openPrintWindow = function () {
+            const board = document.getElementById("board-container");
+            if (!board) {
+                alert("Board container not found.");
+                return;
+            }
+            const htmlContent = board.outerHTML;
+            const printWindow = window.open("", "_blank", "width=1200,height=800");
+            if (!printWindow) {
+                alert("Please allow popups to use the Isolated Print View.");
+                return;
+            }
+            printWindow.document.write(`
+        <html>
+          <head>
+            <title>Print Test</title>
+          </head>
+          <body>
+            ${htmlContent}
+            <script>
+              window.onload = function() {
+                window.focus();
+                setTimeout(() => window.print(), 500);
+              };
+            <\/script>
+          </body>
+        </html>
+      `);
+            printWindow.document.close();
+        };
+    </script>
+</head>
+
+<body>
+    <div id="board-container" style="border:2px solid #333; padding:2em; margin:2em;">
+        <h1>Test Board</h1>
+        <p>This is a test board for print preview.</p>
+    </div>
+    <button onclick="window.openPrintWindow()">Print Board</button>
+</body>
+
+</html>

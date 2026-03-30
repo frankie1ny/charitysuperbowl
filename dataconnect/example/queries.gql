@@ -1,0 +1,48 @@
+query ListAllPools @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public") {
+  Pools {
+    poolId
+    name
+    status
+    price
+    imageUrl
+  }
+}
+
+query GetPoolById($poolId: ID!) @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public") {
+  Pool(poolId: $poolId) {
+    poolId
+    name
+    status
+    price
+    imageUrl
+    Squares {
+      squareId
+      poolId
+      userId
+      row
+      column
+    }
+  }
+}
+
+mutation CreateSquare($poolId: ID!, $row: Int!, $column: Int!) @auth(level: USER, insecureReason: "This operation is safe to expose to all logged in users.") {
+  Square_insert(data: {
+    poolId: $poolId,
+    userId_expr: "auth.uid",
+    row: $row,
+    column: $column
+  })
+}
+
+query GetUserSquares @auth(level: USER, insecureReason: "This operation is safe to expose to all logged in users.") {
+  Squares(where: {userId: {eq_expr: "auth.uid"}}) {
+    squareId
+    poolId
+    row
+    column
+    Pool {
+      name
+      status
+    }
+  }
+}

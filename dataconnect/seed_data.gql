@@ -1,0 +1,46 @@
+mutation CreateSeedData @transaction @auth(level: USER, insecureReason: "This operation is for seeding data and should only be run by authenticated users manually during development.") {
+  user_insertMany(data: [
+    {
+      id: "user-1",
+      username: "GridMaster",
+      email: "grid.master@example.com",
+      displayName: "Grid Master",
+      phoneNumber: "+15551234567"
+    },
+    {
+      id: "user-2",
+      username: "PoolPlayer",
+      email: "pool.player@example.com",
+      displayName: "Pool Player",
+      phoneNumber: "+15559876543"
+    }
+  ])
+  charityPool_insertMany(data: [
+    {
+      id: "pool-1",
+      name: "Super Bowl LVIII Charity Pool",
+      adminUid: "user-1",
+      entryCost: 1000,
+      totalPrize: 0,
+      winnerCount: 1,
+      maxParticipants: 100,
+      startDate: "2024-02-01T00:00:00Z",
+      endDate: "2024-02-12T00:00:00Z",
+      status: "OPEN",
+      description: "Charity pool for Super Bowl LVIII. All proceeds go to local charities.",
+      gridSize: 10,
+      gridNumbersSet: false,
+      charityName: "Local Food Bank"
+    }
+  ])
+  poolEntry_insertMany(data: [
+    {
+      id: "entry-1",
+      poolId: "pool-1",
+      userId: "user-2",
+      squareSelection: "[0,0]",
+      entryDate: "2024-02-02T10:00:00Z",
+      isPaid: true
+    }
+  ])
+}
