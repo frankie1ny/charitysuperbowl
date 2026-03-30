@@ -23,13 +23,16 @@
   <!-- Bulletproof print window -->
   <script>
     window.openPrintWindow = function () {
+
       const board = document.getElementById("board-container");
+      console.log("[Print Debug] board-container:", board);
       if (!board) {
         alert("Board container not found.");
         return;
       }
 
       const htmlContent = board.outerHTML;
+      console.log("[Print Debug] htmlContent:", htmlContent);
 
       const printWindow = window.open("", "_blank", "width=1200,height=800");
       if (!printWindow) {
