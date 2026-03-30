@@ -44,14 +44,14 @@
         .join("");
 
       printWindow.document.write(`
-          <html>
-            <head>
-              <title>Print - Charity Squares</title>
-              ${styles}
-              <style>
-                body { padding: 20px; background: white; }
-                .no-print { display: none !important; }
-              </style>
+        <html>
+          <head>
+            <title>Print - Charity Squares</title>
+            ${styles}
+            <style>
+              body { padding: 20px; background: white; }
+              .no-print { display: none !important; }
+            </style>
   <script type="importmap">
       {
         "imports": {
@@ -65,28 +65,24 @@
         }
       }
     </script>
-              <script type="module" crossorigin src="/assets/index-ekUYuESR.js"></script>
-              <link rel="modulepreload" crossorigin href="/assets/vendor-VKNFUXrR.js">
-              <link rel="modulepreload" crossorigin href="/assets/react-DnXJJzMh.js">
-              <link rel="modulepreload" crossorigin href="/assets/firebase-GSpa3bCz.js">
-              <link rel="stylesheet" crossorigin href="/assets/index-BXfIMQId.css">
-            </head>
-            <body>
-              ${htmlContent}
-            </body>
-          </html>
-        `);
-
+            <script type="module" crossorigin src="/assets/index-ekUYuESR.js"></script>
+            <link rel="modulepreload" crossorigin href="/assets/vendor-VKNFUXrR.js">
+            <link rel="modulepreload" crossorigin href="/assets/react-DnXJJzMh.js">
+            <link rel="modulepreload" crossorigin href="/assets/firebase-GSpa3bCz.js">
+            <link rel="stylesheet" crossorigin href="/assets/index-BXfIMQId.css">
+          </head>
+          <body>
+            ${htmlContent}
+            <script>
+              window.onload = function() {
+                window.focus();
+                setTimeout(() => window.print(), 500);
+              };
+            <\/script>
+          </body>
+        </html>
+      `);
       printWindow.document.close();
-
-      const script = printWindow.document.createElement("script");
-      script.textContent = `
-          window.onload = function() {
-            window.focus();
-            setTimeout(() => window.print(), 500);
-          };
-        `;
-      printWindow.document.body.appendChild(script);
     };
   </script>
 
